@@ -7,7 +7,7 @@ class ProductController {
   async index(request: Request, response: Response, next: NextFunction) {
     try {
       const { name } = request.query;
-      const products = await knex("products")
+      const products = await knex<ProductRepository>("products")
         .select()
         .whereLike("name", `%${name ?? ""}%`)
         .orderBy("name");
@@ -16,6 +16,7 @@ class ProductController {
       next(error);
     }
   }
+
   async create(request: Request, response: Response, next: NextFunction) {
     try {
       const bodySchema = z.object({
